@@ -1,5 +1,5 @@
 import { formatJSON, formatFill } from "./formatter";
-import { parseJSON } from "./parse";
+import { parseJSON } from "./utils/parse";
 const json = {
   products: [
     {
