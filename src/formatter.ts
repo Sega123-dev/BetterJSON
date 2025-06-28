@@ -20,3 +20,20 @@ export const formatJSON = <jsonType extends Object>(
     return undefined;
   }
 };
+export const formatFill = <jsonType extends Object>(
+  value: jsonType,
+  fill: number | string
+): string | undefined => {
+  try {
+    if (typeof value !== "object" || value === null)
+      throw new Error("Passed value in formatJSON() is not an object");
+    if (typeof fill != "string")
+      throw new Error("Passed value can only be string");
+
+    const JSONFormatted = JSON.stringify(value, null, fill);
+    return JSONFormatted;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
