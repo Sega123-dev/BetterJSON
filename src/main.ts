@@ -1,5 +1,6 @@
-import { formatJSON, formatFill } from "./formatter";
+import { formatJSON, formatFill } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
+import { stringifyJSON } from "./utils/stringify";
 const json = {
   products: [
     {
@@ -26,4 +27,4 @@ const json = {
     },
   ],
 };
-console.log(parseJSON(formatJSON(json, 2)!));
+console.log(stringifyJSON(json));
