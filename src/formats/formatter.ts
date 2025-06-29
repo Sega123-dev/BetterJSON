@@ -20,6 +20,7 @@ export const formatJSON = <jsonType extends Object>(
     return undefined;
   }
 };
+
 export const formatFill = <jsonType extends Object>(
   value: jsonType,
   fill: number | string
