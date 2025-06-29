@@ -3,10 +3,12 @@ import { stringifyJSON } from "./stringify";
 export const validateJSON = <validateType>(
   json: validateType
 ): boolean | undefined => {
-  let stringified = stringifyJSON(json) as string;
+  try {
+    let stringified = stringifyJSON(json) as string;
 
-  let parser = JSON.parse(stringified);
-  if (parser) return true;
-
-  return false;
+    let parser = JSON.parse(stringified);
+    if (parser) return true;
+  } catch (error) {
+    return false;
+  }
 };

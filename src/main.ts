@@ -31,3 +31,4 @@ const json = {
 };
 const stringify = formatJSON(json, 2);
 display(stringify, "#app");
+console.log(validateJSON(display));
