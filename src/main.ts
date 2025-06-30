@@ -3,6 +3,7 @@ import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { display } from "./display/display";
 import { validateJSON } from "./utils/validate";
+import { fetchJSON } from "./utils/fetch";
 const json = {
   products: [
     {
@@ -29,6 +30,3 @@ const json = {
     },
   ],
 };
-const stringify = formatJSON(json, 2);
-display(stringify, "#app");
-console.log(validateJSON(display));
