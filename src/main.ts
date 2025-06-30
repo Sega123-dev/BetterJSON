@@ -1,4 +1,4 @@
-import { formatJSON, formatFill } from "./formats/formatter";
+import { formatJSON, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { display } from "./display/display";
@@ -30,3 +30,4 @@ const json = {
     },
   ],
 };
+display(minifyJSON(json), "#app");

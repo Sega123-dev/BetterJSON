@@ -38,3 +38,19 @@ export const formatFill = <jsonType extends Object>(
     return undefined;
   }
 };
+
+export const minifyJSON = <jsonType>(value: jsonType): string | undefined => {
+  try {
+    if (
+      (typeof value !== "string" && typeof value !== "object") ||
+      value === null
+    )
+      throw new Error(
+        "Passed value in minifyJSON() must be string or an object"
+      );
+    return JSON.stringify(value);
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
