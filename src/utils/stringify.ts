@@ -4,5 +4,6 @@ export const stringifyJSON = (value: unknown): string | undefined => {
     return parsed;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 };

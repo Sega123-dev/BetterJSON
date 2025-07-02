@@ -8,5 +8,6 @@ export const parseJSON = (string: string): Object | undefined => {
     return parsed;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 };

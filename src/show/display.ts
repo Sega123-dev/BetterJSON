@@ -26,5 +26,6 @@ export const display = <displayValue>(
     wrapper.appendChild(preElement);
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 };
