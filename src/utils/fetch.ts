@@ -1,5 +1,3 @@
-import { stringifyJSON } from "./stringify";
-
 export const fetchJSON = async (fileName: string) => {
   try {
     const fetchData = fetch(fileName);
