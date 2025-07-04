@@ -1,4 +1,17 @@
+import { formatJSON } from "../formats/formatter";
 import { stringifyJSON } from "../utils/stringify";
+
+export const consoleDisplay = (value: Object): void | undefined => {
+  try {
+    if (typeof value !== "object")
+      throw new Error("Passed value must be an object in consoleDisplay()");
+
+    console.log(formatJSON(value, 2));
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
 
 export const display = <displayValue>(
   value: displayValue,

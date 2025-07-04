@@ -1,7 +1,7 @@
-export const stringifyJSON = (value: unknown): string | undefined => {
+export const stringifyJSON = (value: Object): string | undefined => {
   try {
-    const parsed = JSON.stringify(value);
-    return parsed;
+    const stringified = JSON.stringify(value);
+    return stringified;
   } catch (error) {
     console.error(error);
     return undefined;

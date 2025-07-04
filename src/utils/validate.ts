@@ -1,6 +1,6 @@
 import { stringifyJSON } from "./stringify";
 
-export const validateJSON = <validateType>(
+export const validateJSON = <validateType extends Object>(
   json: validateType
 ): boolean | undefined => {
   try {

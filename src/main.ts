@@ -1,7 +1,7 @@
 import { formatJSON, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
-import { display } from "./show/display";
+import { consoleDisplay, display } from "./show/display";
 import { validateJSON } from "./utils/validate";
 import { fetchJSON } from "./utils/fetch";
 import { mergeFiles, mergeJSON } from "./mods/merge";
@@ -57,6 +57,3 @@ const json2 = {
     },
   ],
 };
-const files = await mergeFiles("package.json", "package-lock.json");
-
-display(formatJSON(files!, 4), "#app");
