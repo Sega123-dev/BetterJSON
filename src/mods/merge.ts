@@ -1,4 +1,4 @@
-import { fetchJSON } from "../utils/fetch";
+import { fetchJSON } from "../fileHandling/fetch";
 import { stringifyJSON } from "../utils/stringify";
 
 export const mergeJSON = (

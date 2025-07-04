@@ -3,8 +3,9 @@ import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { consoleDisplay, display } from "./show/display";
 import { validateJSON } from "./utils/validate";
-import { fetchJSON } from "./utils/fetch";
+import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, mergeJSON } from "./mods/merge";
+import { exportJS, exportJSON } from "./fileHandling/export";
 const json = {
   products: [
     {
@@ -57,3 +58,6 @@ const json2 = {
     },
   ],
 };
+document.getElementById("app")?.addEventListener("click", () => {
+  exportJS(json);
+});
