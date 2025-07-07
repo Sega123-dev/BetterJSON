@@ -1,10 +1,10 @@
-import { formatJSON, formatFill, minifyJSON } from "./formats/formatter";
+import { format, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { consoleDisplay, display } from "./show/display";
 import { validateJSON } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
-import { mergeFiles, mergeJSON } from "./mods/merge";
+import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
 const json = {
   products: [

@@ -1,4 +1,3 @@
-import { parseJSON } from "../utils/parse";
 import { stringifyJSON } from "../utils/stringify";
 
 export const exportJSON = (

@@ -1,4 +1,4 @@
-import { formatJSON } from "../formats/formatter";
+import { format } from "../formats/formatter";
 import { stringifyJSON } from "../utils/stringify";
 
 export const consoleDisplay = (value: Object): void | undefined => {
@@ -6,7 +6,7 @@ export const consoleDisplay = (value: Object): void | undefined => {
     if (typeof value !== "object")
       throw new Error("Passed value must be an object in consoleDisplay()");
 
-    console.log(formatJSON(value, 2));
+    console.log(format(value, 2));
   } catch (error) {
     console.error(error);
     return undefined;

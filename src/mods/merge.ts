@@ -1,10 +1,7 @@
 import { fetchJSON } from "../fileHandling/fetch";
 import { stringifyJSON } from "../utils/stringify";
 
-export const mergeJSON = (
-  value1: Object,
-  value2: Object
-): string | undefined => {
+export const merge = (value1: Object, value2: Object): string | undefined => {
   try {
     if (value1 === null || value2 === null)
       throw new Error("Values can't be null in mergeJSON() function");
