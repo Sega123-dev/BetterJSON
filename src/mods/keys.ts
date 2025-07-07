@@ -11,6 +11,13 @@ interface RemoveKeyParamters {
   nested?: string;
 }
 
+interface ModifyKeyParameters {
+  object: Record<string, any>;
+  key: string;
+  newValue: any;
+  nested?: string;
+}
+
 export const addKey = ({
   object,
   newKey,
@@ -29,7 +36,7 @@ export const addKey = ({
       object[newKey] = keyValue;
       return object;
     }
-    const path: string[] = nested.split(".");
+    const path: string[] = nested?.split(".");
     let current: any = object;
 
     for (const segment of path) {
@@ -50,6 +57,7 @@ export const addKey = ({
     return undefined;
   }
 };
+
 export const removeKey = ({
   object,
   key,
@@ -65,7 +73,7 @@ export const removeKey = ({
       delete object[key];
       return object;
     }
-    const path: string[] = nested.split(".");
+    const path: string[] = nested?.split(".");
     let current: any = object;
     for (const segment of path) {
       if (
@@ -78,6 +86,40 @@ export const removeKey = ({
       current = current[segment];
     }
     delete current[key];
+    return object;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
+export const modifyKeyValue = ({
+  object,
+  key,
+  newValue,
+  nested,
+}: ModifyKeyParameters): Object | undefined => {
+  try {
+    if (object === null || typeof object !== "object")
+      throw new Error("Object must be defined and must be type of an object");
+    if (key === null || typeof key !== "string")
+      throw new Error("Key must be defined and type of a string");
+
+    if (!nested) object[key] = newValue;
+
+    const path: string[] = nested!.split(".");
+    let target = object;
+    for (const segment of path) {
+      if (
+        !Object.prototype.hasOwnProperty.call(target, segment) ||
+        typeof target[segment] !== "object" ||
+        target[segment] === null
+      ) {
+        throw new Error("Path for the nested object is invalid");
+      }
+      target = target[segment];
+    }
+    target[key] = newValue;
     return object;
   } catch (error) {
     console.error(error);

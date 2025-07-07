@@ -6,7 +6,7 @@ import { validate } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
-import { addKey, removeKey } from "./mods/keys";
+import { addKey, modifyKeyValue, removeKey } from "./mods/keys";
 const json = {
   products: [
     {
@@ -70,8 +70,10 @@ const obj = {
     },
   },
 };
-const key = removeKey({
+const key = modifyKeyValue({
   object: obj,
   key: "theme",
+  newValue: "light",
   nested: "user.profile.settings",
 });
+console.log(JSON.stringify(key, null, 2));
