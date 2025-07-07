@@ -55,6 +55,7 @@ const json2 = {
       details: {
         brand: "FitCore",
         batteryLife: "36 hours",
+        aaa: "string",
       },
     },
   ],
