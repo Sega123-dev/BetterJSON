@@ -66,7 +66,7 @@ const obj = {
     profile: {
       settings: {
         theme: "dark",
-        notifications: true,
+        notifications: false,
       },
     },
   },
