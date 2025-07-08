@@ -153,6 +153,21 @@ export const renameKey = ({
       delete object[oldKey];
       return object;
     }
+    const path: string[] = nested!.split(".");
+    let target = object;
+    for (const segment of path) {
+      if (
+        !Object.prototype.hasOwnProperty.call(target, segment) ||
+        typeof target[segment] !== "object" ||
+        target[segment] === null
+      ) {
+        throw new Error("Path for the nested object is invalid");
+      }
+      target = target[segment];
+    }
+    target[newKey] = target[oldKey];
+    delete object[oldKey];
+    return object;
   } catch (error) {
     console.error(error);
     return undefined;

@@ -73,12 +73,13 @@ const obj = {
 };
 const key = renameKey({
   object: obj,
-  oldKey: "user",
+  oldKey: "theme",
   newKey: "cunga lunga",
+  nested: "user.profile.settings",
 });
 const departments = [
   { DepartmentName: "Sales", id: 1 },
   { DepartmentName: "accounting", id: 2 },
   { DepartmentName: "Marketing", id: 3 },
 ];
-console.log(sortObjectArray(departments, "DepartmentName"));
+console.log(key);
