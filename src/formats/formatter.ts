@@ -1,4 +1,4 @@
-export const format = <jsonType extends Object>(
+export const format = <jsonType extends Object | undefined>(
   value: jsonType,
   spaces: number | string
 ): string | undefined => {

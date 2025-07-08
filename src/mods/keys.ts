@@ -5,7 +5,7 @@ interface AddKeyParameters {
   nested?: string;
 }
 
-interface RemoveKeyParamters {
+interface RemoveKeyParameters {
   object: Record<string, any>;
   key: string;
   nested?: string;
@@ -15,6 +15,13 @@ interface ModifyKeyParameters {
   object: Record<string, any>;
   key: string;
   newValue: any;
+  nested?: string;
+}
+
+interface RenameKeyParameters {
+  object: Record<string, any>;
+  oldKey: string;
+  newKey: string;
   nested?: string;
 }
 
@@ -62,7 +69,7 @@ export const removeKey = ({
   object,
   key,
   nested,
-}: RemoveKeyParamters): Object | undefined => {
+}: RemoveKeyParameters): Object | undefined => {
   try {
     if (object === null || typeof object !== "object")
       throw new Error("Object must be defined and must be type of an object");
@@ -121,6 +128,31 @@ export const modifyKeyValue = ({
     }
     target[key] = newValue;
     return object;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
+export const renameKey = ({
+  object,
+  oldKey,
+  newKey,
+  nested,
+}: RenameKeyParameters): Object | undefined => {
+  try {
+    if (object === null || typeof object !== "object")
+      throw new Error("Object must be defined and must be type of an object");
+    if (oldKey === null || typeof oldKey !== "string")
+      throw new Error("Old key must be defined and type of a string");
+    if (newKey === null || typeof newKey !== "string")
+      throw new Error("New key must be defined and type of a string");
+
+    if (!nested) {
+      object[newKey] = object[oldKey];
+      delete object[oldKey];
+      return object;
+    }
   } catch (error) {
     console.error(error);
     return undefined;

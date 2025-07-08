@@ -1,4 +1,6 @@
-export const stringifyJSON = (value: Object): string | undefined => {
+export const stringifyJSON = (
+  value: Object | undefined
+): string | undefined => {
   try {
     const stringified = JSON.stringify(value);
     return stringified;

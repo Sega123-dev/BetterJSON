@@ -6,7 +6,8 @@ import { validate } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
-import { addKey, modifyKeyValue, removeKey } from "./mods/keys";
+import { addKey, modifyKeyValue, removeKey, renameKey } from "./mods/keys";
+import { sortObjectArray } from "./utils/sort";
 const json = {
   products: [
     {
@@ -70,10 +71,14 @@ const obj = {
     },
   },
 };
-const key = modifyKeyValue({
+const key = renameKey({
   object: obj,
-  key: "theme",
-  newValue: "light",
-  nested: "user.profile.settings",
+  oldKey: "user",
+  newKey: "cunga lunga",
 });
-console.log(JSON.stringify(key, null, 2));
+const departments = [
+  { DepartmentName: "Sales", id: 1 },
+  { DepartmentName: "accounting", id: 2 },
+  { DepartmentName: "Marketing", id: 3 },
+];
+console.log(sortObjectArray(departments, "DepartmentName"));
