@@ -71,10 +71,12 @@ const obj = {
     },
   },
 };
-const key = renameKey({
-  object: obj,
-  oldKey: "theme",
-  newKey: "cunga lunga",
-  nested: "user.profile.settings",
-});
-typeSchema(undefined);
+const example = {
+  name: "John",
+  age: 25,
+  meta: {
+    verified: true,
+    score: 10,
+  },
+};
+console.log(example);

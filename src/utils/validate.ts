@@ -14,24 +14,27 @@ export const validate = <validateType extends Object>(
 };
 
 export const typeSchema = (
-  value: Record<string, any> | undefined
+  object: Record<string, any> | undefined
 ): Object | undefined => {
   try {
-    if (value === undefined) {
+    if (object === undefined) {
       console.warn(
-        "Warning: Passed value is undefined,please provide defined value"
+        "Warning: Passed object is undefined,please provide defined object"
       );
       return;
     }
-    if (typeof value !== "object" || !value)
-      throw new Error("Value must be defined and type of an object");
+    if (typeof object !== "object" || !object)
+      throw new Error("object must be defined and type of an object");
 
-    Object.keys(value).forEach((key) => {
-      console.log(`Key:${key}, value: ${value[key]}`);
-      if (typeof value[key] === "object" && value[key] !== null) {
-        typeSchema(value[key]);
+    Object.keys(object).forEach((key) => {
+      if (typeof object[key] === "object" && object[key] !== null) {
+        object[key] = typeSchema(object[key]);
+      } else {
+        object[key] = typeof object[key];
       }
+      object[key] = typeof object[key];
     });
+    return object;
   } catch (error) {
     console.error(error);
     return undefined;
