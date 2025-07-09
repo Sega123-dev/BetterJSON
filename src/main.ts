@@ -2,7 +2,7 @@ import { format, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { consoleDisplay, display } from "./show/display";
-import { validate } from "./utils/validate";
+import { typeSchema, validate } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
@@ -77,9 +77,4 @@ const key = renameKey({
   newKey: "cunga lunga",
   nested: "user.profile.settings",
 });
-const departments = [
-  { DepartmentName: "Sales", id: 1 },
-  { DepartmentName: "accounting", id: 2 },
-  { DepartmentName: "Marketing", id: 3 },
-];
-console.log(key);
+typeSchema(undefined);
