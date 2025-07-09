@@ -1,10 +1,14 @@
 import { stringifyJSON } from "../utils/stringify";
 
 export const exportJSON = (
-  value: Object,
+  value: Object | undefined,
   filename: string = "data.json"
 ): void => {
   try {
+    if (value === undefined) {
+      console.warn("Warning: Passed value is undefined");
+      return;
+    }
     if (typeof value !== "object" || value === null)
       throw new Error("Passed value must be an object in exportJSON()");
     const jsonStr = stringifyJSON(value);
@@ -23,6 +27,10 @@ export const exportJSON = (
 };
 export const exportJS = (code: any, filename: string = "script.js"): void => {
   try {
+    if (code === undefined) {
+      console.warn("Warning: Code is not provided");
+      return;
+    }
     if (code === null) throw new Error("Code does not exist");
     const blob = new Blob([code], { type: "application/javascript" });
 

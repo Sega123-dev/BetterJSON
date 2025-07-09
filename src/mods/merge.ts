@@ -1,8 +1,15 @@
 import { fetchJSON } from "../fileHandling/fetch";
 import { stringifyJSON } from "../utils/stringify";
 
-export const merge = (value1: Object, value2: Object): string | undefined => {
+export const merge = (
+  value1: Record<any, string>,
+  value2: Record<any, string>
+): string | undefined => {
   try {
+    if (value1 === undefined || value2 === undefined) {
+      console.warn("Warning: Value is undefined");
+      return;
+    }
     if (value1 === null || value2 === null)
       throw new Error("Values can't be null in mergeJSON() function");
     return "[" + stringifyJSON(value1) + "," + stringifyJSON(value2) + "]";
@@ -14,8 +21,12 @@ export const merge = (value1: Object, value2: Object): string | undefined => {
 export const mergeFiles = async (
   file1: string,
   file2: string
-): Promise<object | undefined> => {
+): Promise<Record<any, string> | undefined> => {
   try {
+    if (file1 === undefined || file2 === undefined) {
+      console.warn("Warning: Files are undefined");
+      return;
+    }
     if (typeof file1 !== "string" || typeof file2 !== "string")
       throw new Error("File names must be type of string");
     if (!file1.endsWith(".json") || !file2.endsWith(".json")) {

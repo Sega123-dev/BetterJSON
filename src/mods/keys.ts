@@ -32,6 +32,17 @@ export const addKey = ({
   nested,
 }: AddKeyParameters): Object | undefined => {
   try {
+    if (
+      object === undefined ||
+      newKey === undefined ||
+      keyValue === undefined ||
+      nested === undefined
+    ) {
+      console.warn(
+        "Warning: One or couple of provided values are not provided"
+      );
+      return;
+    }
     if (object === null || typeof object !== "object")
       throw new Error("Object must be defined and must be type of an object");
     if (newKey === null || typeof newKey !== "string")
@@ -71,6 +82,10 @@ export const removeKey = ({
   nested,
 }: RemoveKeyParameters): Object | undefined => {
   try {
+    if (object === undefined || key === undefined || nested === undefined) {
+      console.warn("Warning: One of the passed values are not defined");
+      return;
+    }
     if (object === null || typeof object !== "object")
       throw new Error("Object must be defined and must be type of an object");
     if (key === null || typeof key !== "string")

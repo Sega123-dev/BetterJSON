@@ -28,7 +28,7 @@ export const display = <displayValue>(
 
     if (typeof value === "object") {
       let stringified: string | undefined = stringifyJSON(value);
-      if (typeof stringified === "undefined")
+      if (stringified === undefined)
         throw new Error("Object value is undefined");
       preElement.innerText += stringified;
       wrapper.appendChild(preElement);

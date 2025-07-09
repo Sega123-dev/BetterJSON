@@ -1,5 +1,9 @@
 export const fetchJSON = async (fileName: string) => {
   try {
+    if (fileName === undefined) {
+      console.warn("Passed value is undefined");
+      return;
+    }
     const fetchData = fetch(fileName);
     const response = await fetchData;
 
