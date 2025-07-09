@@ -2,7 +2,7 @@ import { format, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { consoleDisplay, display } from "./show/display";
-import { validate } from "./utils/validate";
+import { typeSchema, validate } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
@@ -76,4 +76,4 @@ const key = modifyKeyValue({
   newValue: "light",
   nested: "user.profile.settings",
 });
-console.log(JSON.stringify(key, null, 2));
+typeSchema(undefined);
