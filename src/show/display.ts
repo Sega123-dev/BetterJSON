@@ -1,7 +1,9 @@
 import { format } from "../formats/formatter";
 import { stringifyJSON } from "../utils/stringify";
 
-export const consoleDisplay = (value: Object): void | undefined => {
+export const consoleDisplay = (
+  value: Record<string, any>
+): void | undefined => {
   try {
     if (typeof value !== "object")
       throw new Error("Passed value must be an object in consoleDisplay()");

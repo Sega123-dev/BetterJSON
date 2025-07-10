@@ -1,4 +1,4 @@
-export const format = <jsonType extends Object | undefined>(
+export const format = <jsonType extends Record<string, any> | undefined>(
   value: jsonType,
   spaces: number | string
 ): string | undefined => {
@@ -25,7 +25,7 @@ export const format = <jsonType extends Object | undefined>(
   }
 };
 
-export const formatFill = <jsonType extends Object>(
+export const formatFill = <jsonType extends Record<string, any> | undefined>(
   value: jsonType,
   fill: number | string
 ): string | undefined => {

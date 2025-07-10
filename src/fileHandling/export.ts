@@ -1,7 +1,7 @@
 import { stringifyJSON } from "../utils/stringify";
 
 export const exportJSON = (
-  value: Object | undefined,
+  value: Record<any, string> | undefined,
   filename: string = "data.json"
 ): void => {
   try {
@@ -25,7 +25,10 @@ export const exportJSON = (
     return undefined;
   }
 };
-export const exportJS = (code: any, filename: string = "script.js"): void => {
+export const exportJS = (
+  code: string,
+  filename: string = "script.js"
+): void => {
   try {
     if (code === undefined) {
       console.warn("Warning: Code is not provided");

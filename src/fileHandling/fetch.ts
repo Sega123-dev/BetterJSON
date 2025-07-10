@@ -1,11 +1,11 @@
-export const fetchJSON = async (fileName: string) => {
+export const fetchJSON = async (fileName: string): Promise<any> => {
   try {
     if (fileName === undefined) {
       console.warn("Passed value is undefined");
       return;
     }
-    const fetchData = fetch(fileName);
-    const response = await fetchData;
+    const fetchData: Promise<Response> = fetch(fileName);
+    const response: Response = await fetchData;
 
     console.info(`Status: ${response.status}`);
     if (response.ok) return response.json();

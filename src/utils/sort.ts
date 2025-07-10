@@ -6,8 +6,8 @@ export const sortObjectArray = <T extends Record<string, any>>(
     if (!array) throw new Error("Array must be defined");
 
     array.sort((a, b) => {
-      const textA = a[key].toUpperCase();
-      const textB = b[key].toUpperCase();
+      const textA: string = a[key].toUpperCase();
+      const textB: string = b[key].toUpperCase();
       return textA < textB ? -1 : textA > textB ? 1 : 0;
     });
 
