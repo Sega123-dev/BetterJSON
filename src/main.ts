@@ -2,7 +2,7 @@ import { format, formatFill, minifyJSON } from "./formats/formatter";
 import { parseJSON } from "./utils/parse";
 import { stringifyJSON } from "./utils/stringify";
 import { consoleDisplay, display } from "./show/display";
-import { typeSchema, validate } from "./utils/validate";
+import { compareKeys, typeSchema, validate } from "./utils/validate";
 import { fetchJSON } from "./fileHandling/fetch";
 import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
@@ -79,4 +79,5 @@ const example = {
     score: 10,
   },
 };
-console.log(example);
+
+compareKeys({ object: example, key1: "name", key2: "age" });

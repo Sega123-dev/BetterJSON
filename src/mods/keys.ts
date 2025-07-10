@@ -1,25 +1,25 @@
 interface AddKeyParameters {
-  object: Record<string, any>;
+  object: Record<string, any> | undefined;
   newKey: string;
   keyValue: any;
   nested?: string;
 }
 
 interface RemoveKeyParameters {
-  object: Record<string, any>;
+  object: Record<string, any> | undefined;
   key: string;
   nested?: string;
 }
 
 interface ModifyKeyParameters {
-  object: Record<string, any>;
+  object: Record<string, any> | undefined;
   key: string;
   newValue: any;
   nested?: string;
 }
 
 interface RenameKeyParameters {
-  object: Record<string, any>;
+  object: Record<string, any> | undefined;
   oldKey: string;
   newKey: string;
   nested?: string;
