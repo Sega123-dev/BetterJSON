@@ -1,5 +1,18 @@
 import { format } from "../formats/formatter";
 import { stringifyJSON } from "../utils/stringify";
+import hljs from "highlight.js/lib/core";
+import json from "highlight.js/lib/languages/json";
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
+import "highlight.js/styles/atom-one-light.min.css";
+
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("xml", xml);
+
+type HLJSLanguage = "javascript" | "typescript" | "json" | "xml";
 
 export const consoleDisplay = (
   value: Record<string, any>
@@ -18,7 +31,7 @@ export const consoleDisplay = (
 export const display = <displayValue>(
   value: displayValue,
   selector: string
-): void => {
+): void | undefined => {
   try {
     if (value === null) throw new Error("Value passed in display is null");
 
@@ -39,6 +52,42 @@ export const display = <displayValue>(
 
     preElement.innerText += value;
     wrapper.appendChild(preElement);
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
+export const colormatic = <Value extends any>(
+  value: Value,
+  lang: HLJSLanguage,
+  selector: string
+): void => {
+  try {
+    const wrapper = document.querySelector(selector);
+    if (!wrapper) throw new Error("Wrapper element not found");
+
+    if (value === undefined || value === null)
+      throw new Error("Value is undefined or null");
+    if (!lang) throw new Error("Language is undefined or null");
+
+    const stringified: string | undefined =
+      typeof value === "string" ? value : format(value, 2);
+
+    const highlighted: string = hljs.highlight(stringified!, {
+      language: lang,
+    }).value;
+
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+
+    code.classList.add("hljs", lang);
+
+    code.innerHTML += highlighted;
+
+    pre.appendChild(code);
+
+    wrapper.appendChild(pre);
   } catch (error) {
     console.error(error);
     return undefined;
