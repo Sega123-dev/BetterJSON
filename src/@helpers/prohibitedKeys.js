@@ -174,3 +174,23 @@ export const prohibitedKeys = new Set([
   "zip",
   "zip_code",
 ]);
+export const prohibitedKeysBasic = new Set([
+  "password",
+  "token",
+  "secret",
+  "secret-key",
+  "private",
+  "private-key",
+  "private_token",
+  "pin",
+  "ssn",
+  "social-security-number",
+  "ip",
+  "ip_address",
+  "cookie",
+  "admin-password",
+  "admin_token",
+  "card-number",
+  "cc",
+  "ccn",
+]);

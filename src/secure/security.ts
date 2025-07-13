@@ -1,4 +1,7 @@
-import { prohibitedKeys } from "../@helpers/prohibitedKeys";
+import {
+  prohibitedKeys,
+  prohibitedKeysBasic,
+} from "../@helpers/prohibitedKeys";
 
 export const stripValues = (
   object: Record<string, any | undefined>
@@ -14,8 +17,11 @@ export const stripValues = (
 export const encrypt = () => {};
 export const encryptAll = () => {};
 export const decrypt = () => {};
+
 export const getPK = (): Set<string> => {
   return prohibitedKeys;
 };
-
+export const getPKBasic = (): Set<string> => {
+  return prohibitedKeysBasic;
+};
 export const basicSecurity = () => {};
