@@ -1,4 +1,4 @@
-const prohibitedNameKeys = new Set([
+export const prohibitedKeys = new Set([
   "2fa",
   "access",
   "access-token",

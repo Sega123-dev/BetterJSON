@@ -8,6 +8,7 @@ import { mergeFiles, merge } from "./mods/merge";
 import { exportJS, exportJSON } from "./fileHandling/export";
 import { addKey, modifyKeyValue, removeKey, renameKey } from "./mods/keys";
 import { sortObjectArray } from "./utils/sort";
+import { getPK } from "./secure/security";
 const json = {
   products: [
     {
@@ -79,19 +80,4 @@ const example = {
     score: 10,
   },
 };
-colormatic(
-  `  stringifyJSON(export const validate = <validateType extends Object>(
-  json: validateType
-): boolean | undefined => {
-  try {
-    let stringified: string = stringifyJSON(json) as string;
-
-    let parser: Object = JSON.parse(stringified);
-    if (parser) return true;
-  } catch (error) {
-    return false;
-  }
-};`,
-  "typescript",
-  "#app"
-);
+console.log(getPK());
