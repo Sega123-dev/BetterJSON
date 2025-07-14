@@ -82,10 +82,10 @@ const example = {
   },
 };
 const rl = format(
-  modifyKeyValue({
+  renameKey({
     object: json,
-    key: "batteryLife",
-    newValue: "battery",
+    oldKey: "brand",
+    newKey: "Su-57 5th gen multirole fighter jet",
     nested: "products.1.details",
   }),
   2

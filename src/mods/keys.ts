@@ -161,17 +161,33 @@ export const modifyKeyValue = ({
     if (!nested) object[key] = newValue;
 
     const path: string[] = nested!.split(".");
-    let target = object;
-    for (const segment of path) {
-      if (
-        !Object.prototype.hasOwnProperty.call(target, segment) ||
-        typeof target[segment] !== "object" ||
-        target[segment] === null
-      ) {
-        throw new Error("Path for the nested object is invalid");
+    let target: any = object;
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+
+      const index = Number(segment);
+      const isArrayIndex = !isNaN(index);
+
+      if (isArrayIndex) {
+        if (!Array.isArray(target)) {
+          target = target[path[i - 1]] = [];
+        }
+        if (!target[index]) {
+          target[index] = {};
+        }
+        target = target[index];
+      } else {
+        if (
+          !Object.prototype.hasOwnProperty.call(target, segment) ||
+          typeof target[segment] !== "object" ||
+          target[segment] === null
+        ) {
+          target[segment] = {};
+        }
+        target = target[segment];
       }
-      target = target[segment];
     }
+
     target[key] = newValue;
     return object;
   } catch (error) {
@@ -199,20 +215,36 @@ export const renameKey = ({
       delete object[oldKey];
       return object;
     }
+
     const path: string[] = nested!.split(".");
-    let target = object;
-    for (const segment of path) {
-      if (
-        !Object.prototype.hasOwnProperty.call(target, segment) ||
-        typeof target[segment] !== "object" ||
-        target[segment] === null
-      ) {
-        throw new Error("Path for the nested object is invalid");
+    let target: any = object;
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+
+      const index = Number(segment);
+      const isArrayIndex = !isNaN(index);
+
+      if (isArrayIndex) {
+        if (!Array.isArray(target)) {
+          target = target[path[i - 1]] = [];
+        }
+        if (!target[index]) {
+          target[index] = {};
+        }
+        target = target[index];
+      } else {
+        if (
+          !Object.prototype.hasOwnProperty.call(target, segment) ||
+          typeof target[segment] !== "object" ||
+          target[segment] === null
+        ) {
+          target[segment] = {};
+        }
+        target = target[segment];
       }
-      target = target[segment];
     }
     target[newKey] = target[oldKey];
-    delete object[oldKey];
+    delete target[oldKey];
     return object;
   } catch (error) {
     console.error(error);
