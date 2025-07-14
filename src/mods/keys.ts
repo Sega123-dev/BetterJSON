@@ -57,15 +57,30 @@ export const addKey = ({
     const path: string[] = nested?.split(".");
     let current: any = object;
 
-    for (const segment of path) {
-      if (
-        !Object.prototype.hasOwnProperty.call(current, segment) ||
-        typeof current[segment] !== "object" ||
-        current[segment] === null
-      ) {
-        current[segment] = {};
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+
+      const index = Number(segment);
+      const isArrayIndex = !isNaN(index);
+
+      if (isArrayIndex) {
+        if (!Array.isArray(current)) {
+          current = current[path[i - 1]] = [];
+        }
+        if (!current[index]) {
+          current[index] = {};
+        }
+        current = current[index];
+      } else {
+        if (
+          !Object.prototype.hasOwnProperty.call(current, segment) ||
+          typeof current[segment] !== "object" ||
+          current[segment] === null
+        ) {
+          current[segment] = {};
+        }
+        current = current[segment];
       }
-      current = current[segment];
     }
 
     current[newKey] = keyValue;
@@ -97,16 +112,32 @@ export const removeKey = ({
     }
     const path: string[] = nested?.split(".");
     let current: any = object;
-    for (const segment of path) {
-      if (
-        !Object.prototype.hasOwnProperty.call(current, segment) ||
-        typeof current[segment] !== "object" ||
-        current[segment] === null
-      ) {
-        current[segment] = {};
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+
+      const index = Number(segment);
+      const isArrayIndex = !isNaN(index);
+
+      if (isArrayIndex) {
+        if (!Array.isArray(current)) {
+          current = current[path[i - 1]] = [];
+        }
+        if (!current[index]) {
+          current[index] = {};
+        }
+        current = current[index];
+      } else {
+        if (
+          !Object.prototype.hasOwnProperty.call(current, segment) ||
+          typeof current[segment] !== "object" ||
+          current[segment] === null
+        ) {
+          current[segment] = {};
+        }
+        current = current[segment];
       }
-      current = current[segment];
     }
+
     delete current[key];
     return object;
   } catch (error) {

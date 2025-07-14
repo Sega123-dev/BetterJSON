@@ -9,6 +9,7 @@ import { exportJS, exportJSON } from "./fileHandling/export";
 import { addKey, modifyKeyValue, removeKey, renameKey } from "./mods/keys";
 import { sortObjectArray } from "./utils/sort";
 import { getPK } from "./secure/security";
+
 const json = {
   products: [
     {
@@ -80,4 +81,13 @@ const example = {
     score: 10,
   },
 };
-console.log(getPK());
+const rl = format(
+  modifyKeyValue({
+    object: json,
+    key: "batteryLife",
+    newValue: "battery",
+    nested: "products.1.details",
+  }),
+  2
+);
+console.log(rl);
