@@ -34,28 +34,39 @@ async function importCryptoKey(base64Key: string): Promise<CryptoKey> {
 
 // --- Encryption ---
 
-export async function encryptText(plaintext: string) {
-  const key = await crypto.subtle.generateKey(
-    { name: "AES-GCM", length: 256 },
-    true,
-    ["encrypt", "decrypt"]
-  );
+export async function encryptText(
+  plaintext: string
+): Promise<Record<string, any> | undefined> {
+  try {
+    if (plaintext === undefined || typeof plaintext !== "string")
+      throw new Error(
+        "The value that is about to be encrypted has to be plain text and defined"
+      );
+    const key = await crypto.subtle.generateKey(
+      { name: "AES-GCM", length: 256 },
+      true,
+      ["encrypt", "decrypt"]
+    );
 
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const encoder = new TextEncoder();
-  const encodedText = encoder.encode(plaintext);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encoder = new TextEncoder();
+    const encodedText = encoder.encode(plaintext);
 
-  const encryptedBuffer = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    encodedText
-  );
+    const encryptedBuffer = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      key,
+      encodedText
+    );
 
-  return {
-    encryptedData: arrayBufferToBase64(encryptedBuffer),
-    iv: arrayBufferToBase64(iv.buffer),
-    key: await exportCryptoKey(key),
-  };
+    return {
+      encryptedData: arrayBufferToBase64(encryptedBuffer),
+      iv: arrayBufferToBase64(iv.buffer),
+      key: await exportCryptoKey(key),
+    };
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 // --- Decryption ---
@@ -64,17 +75,36 @@ export async function decryptText(
   encryptedDataBase64: string,
   ivBase64: string,
   keyBase64: string
-): Promise<string> {
-  const key = await importCryptoKey(keyBase64);
-  const iv = new Uint8Array(base64ToArrayBuffer(ivBase64));
-  const encryptedData = base64ToArrayBuffer(encryptedDataBase64);
+): Promise<string | undefined> {
+  try {
+    if (
+      encryptedDataBase64 === undefined ||
+      ivBase64 === undefined ||
+      keyBase64 === undefined
+    )
+      throw new Error(
+        "Passed arguments in decrypt function object have to be defined"
+      );
+    if (
+      typeof encryptedDataBase64 !== "string" ||
+      typeof ivBase64 !== "string" ||
+      typeof keyBase64 !== "string"
+    )
+      throw new Error("Arguments must be plain text for decrypting");
+    const key = await importCryptoKey(keyBase64);
+    const iv = new Uint8Array(base64ToArrayBuffer(ivBase64));
+    const encryptedData = base64ToArrayBuffer(encryptedDataBase64);
 
-  const decryptedBuffer = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
-    key,
-    encryptedData
-  );
+    const decryptedBuffer = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv },
+      key,
+      encryptedData
+    );
 
-  const decoder = new TextDecoder();
-  return decoder.decode(decryptedBuffer);
+    const decoder = new TextDecoder();
+    return decoder.decode(decryptedBuffer);
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }

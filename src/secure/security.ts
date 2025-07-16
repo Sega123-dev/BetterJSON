@@ -10,19 +10,9 @@ interface EncryptParams {
   key: string;
 }
 
-export const stripValues = (
-  object: Record<string, any | undefined>
-): Record<string, any> | undefined => {
-  try {
-    if (object === undefined || object === null)
-      console.warn("Object must be defined");
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-};
-
-export const encrypt = async (plain: string): Promise<Object> => {
+export const encrypt = async (
+  plain: string
+): Promise<Record<string, any> | undefined> => {
   return await encryptText(plain);
 };
 
@@ -32,7 +22,7 @@ export const decrypt = async ({
   encryptedData,
   iv,
   key,
-}: EncryptParams): Promise<string> => {
+}: EncryptParams): Promise<string | undefined> => {
   return await decryptText(encryptedData, iv, key);
 };
 
