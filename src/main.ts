@@ -9,6 +9,7 @@ import { exportJS, exportJSON } from "./fileHandling/export";
 import { addKey, modifyKeyValue, removeKey, renameKey } from "./mods/keys";
 import { sortObjectArray } from "./utils/sort";
 import { getPK } from "./secure/security";
+import { decryptText, encryptText } from "./@helpers/cryptoutils";
 
 const json = {
   products: [
@@ -90,4 +91,17 @@ const rl = format(
   }),
   2
 );
-console.log(rl);
+(async () => {
+  const plaintext = "Hello, Web Crypto AES-256-GCM!";
+  const encrypted = await encryptText(plaintext);
+  console.log("Encrypted data:", encrypted.encryptedData);
+  console.log("IV:", encrypted.iv);
+  console.log("Key:", encrypted.key);
+
+  const decrypted = await decryptText(
+    encrypted.encryptedData,
+    encrypted.iv,
+    encrypted.key
+  );
+  console.log("Decrypted text:", decrypted);
+})();
