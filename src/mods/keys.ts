@@ -1,4 +1,4 @@
-import { strip } from "../secure/security";
+import { getPKBasic } from "../secure/security";
 
 type Security = "strip" | "encrypt" | "none";
 
@@ -40,12 +40,12 @@ export const addKey = ({
   nested,
   security = "encrypt",
 }: AddKeyParameters): Object | undefined => {
+  const PKBasic = getPKBasic();
   try {
     if (
       object === undefined ||
       newKey === undefined ||
-      keyValue === undefined ||
-      nested === undefined
+      keyValue === undefined
     ) {
       console.warn(
         "Warning: One or couple of provided values are not provided"
@@ -60,21 +60,28 @@ export const addKey = ({
       throw new Error("Key value must be defined and type of a string");
 
     if (!nested) {
-      object[newKey] = keyValue;
-      return object;
+      if (security === "strip") {
+        PKBasic.forEach((pkKey) => {
+          Object.keys(object).forEach((key) => {
+            if (pkKey === key) object[key] = "";
+          });
+        });
+        object[newKey] = keyValue;
+        return object;
+      }
     }
-    const path: string[] = nested?.split(".");
+    const path: string[] | undefined = nested?.split(".");
     let current: any = object;
 
-    for (let i = 0; i < path.length; i++) {
-      const segment = path[i];
+    for (let i = 0; i < path!.length; i++) {
+      const segment = path![i];
 
       const index = Number(segment);
       const isArrayIndex = !isNaN(index);
 
       if (isArrayIndex) {
         if (!Array.isArray(current)) {
-          current = current[path[i - 1]] = [];
+          current = current[path![i - 1]] = [];
         }
         if (!current[index]) {
           current[index] = {};
@@ -106,8 +113,9 @@ export const removeKey = ({
   nested,
   security = "encrypt",
 }: RemoveKeyParameters): Object | undefined => {
+  const PKBasic = getPKBasic();
   try {
-    if (object === undefined || key === undefined || nested === undefined) {
+    if (object === undefined || key === undefined) {
       console.warn("Warning: One of the passed values are not defined");
       return;
     }
@@ -117,6 +125,13 @@ export const removeKey = ({
       throw new Error("Key must be defined and type of a string");
 
     if (!nested) {
+      if (security === "strip") {
+        PKBasic.forEach((pkKey) => {
+          Object.keys(object).forEach((key) => {
+            if (pkKey === key) object[key] = "";
+          });
+        });
+      }
       delete object[key];
       return object;
     }
@@ -136,7 +151,6 @@ export const removeKey = ({
           current[index] = {};
         }
         current = current[index];
-        strip(current[index]);
       } else {
         if (
           !Object.prototype.hasOwnProperty.call(current, segment) ||
@@ -145,8 +159,8 @@ export const removeKey = ({
         ) {
           current[segment] = {};
         }
+
         current = current[segment];
-        strip(current[index]);
       }
     }
 
@@ -165,25 +179,37 @@ export const modifyKeyValue = ({
   nested,
   security = "encrypt",
 }: ModifyKeyParameters): Object | undefined => {
+  const PKBasic = getPKBasic();
+
   try {
     if (object === null || typeof object !== "object")
       throw new Error("Object must be defined and must be type of an object");
     if (key === null || typeof key !== "string")
       throw new Error("Key must be defined and type of a string");
 
-    if (!nested) object[key] = newValue;
+    if (!nested) {
+      if (security === "strip") {
+        PKBasic.forEach((pkKey) => {
+          if (Object.prototype.hasOwnProperty.call(object, pkKey)) {
+            object[pkKey] = "";
+          }
+        });
+      }
+      object[key] = newValue;
+      return object;
+    }
 
-    const path: string[] = nested!.split(".");
+    const path: string[] = nested.split(".");
     let target: any = object;
+
     for (let i = 0; i < path.length; i++) {
       const segment = path[i];
-
       const index = Number(segment);
       const isArrayIndex = !isNaN(index);
 
       if (isArrayIndex) {
         if (!Array.isArray(target)) {
-          target = target[path[i - 1]] = [];
+          target = [];
         }
         if (!target[index]) {
           target[index] = {};
@@ -204,7 +230,6 @@ export const modifyKeyValue = ({
     target[key] = newValue;
     return object;
   } catch (error) {
-    console.error(error);
     return undefined;
   }
 };
@@ -216,6 +241,7 @@ export const renameKey = ({
   nested,
   security = "encrypt",
 }: RenameKeyParameters): Object | undefined => {
+  const PKBasic = getPKBasic();
   try {
     if (object === null || typeof object !== "object")
       throw new Error("Object must be defined and must be type of an object");
@@ -225,6 +251,13 @@ export const renameKey = ({
       throw new Error("New key must be defined and type of a string");
 
     if (!nested) {
+      if (security === "strip") {
+        PKBasic.forEach((pkKey) => {
+          Object.keys(object).forEach((key) => {
+            if (pkKey === key) object[key] = "";
+          });
+        });
+      }
       object[newKey] = object[oldKey];
       delete object[oldKey];
       return object;

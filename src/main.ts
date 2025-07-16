@@ -85,16 +85,17 @@ const example = {
     password: "password123",
   },
 };
-const rl = format(
-  renameKey({
-    object: json,
-    oldKey: "brand",
-    newKey: "Su-57 5th gen multirole fighter jet",
-    nested: "products.1.details",
-  }),
-  2
-);
-
+const object = {
+  pin: "1234",
+  ssn: "fortnite",
+  password: "password123",
+  theme: "dark",
+};
 console.log(
-  removeKey({ object: obj, key: "theme", nested: "user.profile.settings" })
+  modifyKeyValue({
+    object: object,
+    key: "theme",
+    newValue: "light",
+    security: "strip",
+  })
 );
