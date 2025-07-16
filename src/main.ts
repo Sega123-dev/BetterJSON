@@ -22,6 +22,7 @@ const json = {
       details: {
         brand: "SoundMax",
         warranty: "2 years",
+        password: "password123",
       },
     },
     {
@@ -70,6 +71,7 @@ const obj = {
       settings: {
         theme: "dark",
         notifications: false,
+        pin: "1234",
       },
     },
   },
@@ -80,6 +82,7 @@ const example = {
   meta: {
     verified: true,
     score: 10,
+    password: "password123",
   },
 };
 const rl = format(
@@ -90,4 +93,8 @@ const rl = format(
     nested: "products.1.details",
   }),
   2
+);
+
+console.log(
+  removeKey({ object: obj, key: "theme", nested: "user.profile.settings" })
 );

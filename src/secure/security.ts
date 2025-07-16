@@ -9,7 +9,14 @@ interface EncryptParams {
   iv: string;
   key: string;
 }
-
+export const strip = (value: any): void => {
+  prohibitedKeysBasic.forEach((key) => {
+    if (value === key) {
+      value = "";
+      console.log(value);
+    }
+  });
+};
 export const encrypt = async (
   plain: string
 ): Promise<Record<string, any> | undefined> => {

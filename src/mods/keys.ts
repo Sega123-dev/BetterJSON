@@ -1,14 +1,20 @@
+import { strip } from "../secure/security";
+
+type Security = "strip" | "encrypt" | "none";
+
 interface AddKeyParameters {
   object: Record<string, any> | undefined;
   newKey: string;
   keyValue: any;
   nested?: string;
+  security?: Security;
 }
 
 interface RemoveKeyParameters {
   object: Record<string, any> | undefined;
   key: string;
   nested?: string;
+  security?: Security;
 }
 
 interface ModifyKeyParameters {
@@ -16,6 +22,7 @@ interface ModifyKeyParameters {
   key: string;
   newValue: any;
   nested?: string;
+  security?: Security;
 }
 
 interface RenameKeyParameters {
@@ -23,6 +30,7 @@ interface RenameKeyParameters {
   oldKey: string;
   newKey: string;
   nested?: string;
+  security?: Security;
 }
 
 export const addKey = ({
@@ -30,6 +38,7 @@ export const addKey = ({
   newKey,
   keyValue,
   nested,
+  security = "encrypt",
 }: AddKeyParameters): Object | undefined => {
   try {
     if (
@@ -95,6 +104,7 @@ export const removeKey = ({
   object,
   key,
   nested,
+  security = "encrypt",
 }: RemoveKeyParameters): Object | undefined => {
   try {
     if (object === undefined || key === undefined || nested === undefined) {
@@ -126,6 +136,7 @@ export const removeKey = ({
           current[index] = {};
         }
         current = current[index];
+        strip(current[index]);
       } else {
         if (
           !Object.prototype.hasOwnProperty.call(current, segment) ||
@@ -135,6 +146,7 @@ export const removeKey = ({
           current[segment] = {};
         }
         current = current[segment];
+        strip(current[index]);
       }
     }
 
@@ -151,6 +163,7 @@ export const modifyKeyValue = ({
   key,
   newValue,
   nested,
+  security = "encrypt",
 }: ModifyKeyParameters): Object | undefined => {
   try {
     if (object === null || typeof object !== "object")
@@ -201,6 +214,7 @@ export const renameKey = ({
   oldKey,
   newKey,
   nested,
+  security = "encrypt",
 }: RenameKeyParameters): Object | undefined => {
   try {
     if (object === null || typeof object !== "object")
