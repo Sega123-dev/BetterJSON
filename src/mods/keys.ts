@@ -35,13 +35,13 @@ interface RenameKeyParameters {
   security?: Security;
 }
 
-export const addKey = ({
+export const addKey = async ({
   object,
   newKey,
   keyValue,
   nested,
   security = "encrypt",
-}: AddKeyParameters): Object | undefined => {
+}: AddKeyParameters): Promise<Object | undefined> => {
   const PKBasic = getPKBasic();
   try {
     if (
@@ -63,11 +63,16 @@ export const addKey = ({
 
     if (!nested) {
       if (security === "strip") {
-        PKBasic.forEach((pkKey): void => {
-          Object.keys(object).forEach((key) => {
-            if (pkKey === key) object[key] = "";
-          });
+        PKBasic.forEach((pkKey) => {
+          if (pkKey in object) object[pkKey] = "";
         });
+      } else if (security === "encrypt") {
+        for (const pkKey of PKBasic) {
+          if (pkKey in object && typeof object[pkKey] === "string") {
+            const encrypted = await encrypt(object[pkKey]);
+            if (encrypted) object[pkKey] = encrypted.encryptedData;
+          }
+        }
       }
       object[newKey] = keyValue;
       return object;
@@ -104,6 +109,13 @@ export const addKey = ({
       PKBasic.forEach((pkKey) => {
         if (pkKey in current) current[pkKey] = "";
       });
+    } else if (security === "encrypt") {
+      for (const pkKey of PKBasic) {
+        if (pkKey in current && typeof current[pkKey] === "string") {
+          const encrypted = await encrypt(current[pkKey]);
+          if (encrypted) current[pkKey] = encrypted.encryptedData;
+        }
+      }
     }
     current[newKey] = keyValue;
     return object;
@@ -139,7 +151,7 @@ export const removeKey = async ({
         for (const pkKey of PKBasic) {
           if (pkKey in object && typeof object[pkKey] === "string") {
             const encrypted = await encrypt(object[pkKey]);
-            if (encrypted) object[pkKey] = encrypted;
+            if (encrypted) object[pkKey] = encrypted.encryptedData;
           }
         }
       }
@@ -196,13 +208,13 @@ export const removeKey = async ({
   }
 };
 
-export const modifyKeyValue = ({
+export const modifyKeyValue = async ({
   object,
   key,
   newValue,
   nested,
   security = "encrypt",
-}: ModifyKeyParameters): Object | undefined => {
+}: ModifyKeyParameters): Promise<Object | undefined> => {
   const PKBasic = getPKBasic();
 
   try {
@@ -214,10 +226,15 @@ export const modifyKeyValue = ({
     if (!nested) {
       if (security === "strip") {
         PKBasic.forEach((pkKey) => {
-          if (Object.prototype.hasOwnProperty.call(object, pkKey)) {
-            object[pkKey] = "";
-          }
+          if (pkKey in object) object[pkKey] = "";
         });
+      } else if (security === "encrypt") {
+        for (const pkKey of PKBasic) {
+          if (pkKey in object && typeof object[pkKey] === "string") {
+            const encrypted = await encrypt(object[pkKey]);
+            if (encrypted) object[pkKey] = encrypted.encryptedData;
+          }
+        }
       }
       object[key] = newValue;
       return object;
@@ -252,8 +269,15 @@ export const modifyKeyValue = ({
     }
     if (security === "strip") {
       PKBasic.forEach((pkKey) => {
-        if (pkKey in target) target[pkKey] = "";
+        if (pkKey in object) object[pkKey] = "";
       });
+    } else if (security === "encrypt") {
+      for (const pkKey of PKBasic) {
+        if (pkKey in target && typeof target[pkKey] === "string") {
+          const encrypted = await encrypt(target[pkKey]);
+          if (encrypted) target[pkKey] = encrypted.encryptedData;
+        }
+      }
     }
     target[key] = newValue;
     return object;
@@ -262,13 +286,13 @@ export const modifyKeyValue = ({
   }
 };
 
-export const renameKey = ({
+export const renameKey = async ({
   object,
   oldKey,
   newKey,
   nested,
   security = "encrypt",
-}: RenameKeyParameters): Object | undefined => {
+}: RenameKeyParameters): Promise<Object | undefined> => {
   const PKBasic = getPKBasic();
   try {
     if (object === null || typeof object !== "object")
@@ -281,10 +305,15 @@ export const renameKey = ({
     if (!nested) {
       if (security === "strip") {
         PKBasic.forEach((pkKey) => {
-          Object.keys(object).forEach((key) => {
-            if (pkKey === key) object[key] = "";
-          });
+          if (pkKey in object) object[pkKey] = "";
         });
+      } else if (security === "encrypt") {
+        for (const pkKey of PKBasic) {
+          if (pkKey in object && typeof object[pkKey] === "string") {
+            const encrypted = await encrypt(object[pkKey]);
+            if (encrypted) object[pkKey] = encrypted.encryptedData;
+          }
+        }
       }
       object[newKey] = object[oldKey];
       delete object[oldKey];
@@ -320,8 +349,15 @@ export const renameKey = ({
     }
     if (security === "strip") {
       PKBasic.forEach((pkKey) => {
-        if (pkKey in target) target[pkKey] = "";
+        if (pkKey in object) object[pkKey] = "";
       });
+    } else if (security === "encrypt") {
+      for (const pkKey of PKBasic) {
+        if (pkKey in target && typeof target[pkKey] === "string") {
+          const encrypted = await encrypt(target[pkKey]);
+          if (encrypted) target[pkKey] = encrypted.encryptedData;
+        }
+      }
     }
     target[newKey] = target[oldKey];
     delete target[oldKey];

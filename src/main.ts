@@ -91,6 +91,7 @@ const testObj = {
     meta: {
       password: "alicePass123",
       token: "tokenValue",
+      score: 10,
     },
     contacts: [
       { type: "email", value: "alice@example.com" },
@@ -98,10 +99,11 @@ const testObj = {
     ],
   },
 };
-const a = await removeKey({
-  object: example,
+const a = await modifyKeyValue({
+  object: testObj,
   key: "score",
-  nested: "meta",
+  newValue: "scorenew",
+  nested: "user.meta",
   security: "encrypt",
 });
 console.log(a);
