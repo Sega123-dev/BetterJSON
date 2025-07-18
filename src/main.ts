@@ -85,18 +85,23 @@ const example = {
     password: "password123",
   },
 };
-const object = {
-  pin: "1234",
-  ssn: "fortnite",
-  password: "password123",
-  theme: "dark",
+const testObj = {
+  user: {
+    name: "Alice",
+    meta: {
+      password: "alicePass123",
+      token: "tokenValue",
+    },
+    contacts: [
+      { type: "email", value: "alice@example.com" },
+      { type: "phone", value: "+123456789" },
+    ],
+  },
 };
-const a = modifyKeyValue({
+const a = await removeKey({
   object: example,
   key: "score",
-  newValue: 2222,
   nested: "meta",
-  security: "strip",
+  security: "encrypt",
 });
-const b: any = a;
 console.log(a);

@@ -113,12 +113,12 @@ export const addKey = ({
   }
 };
 
-export const removeKey = ({
+export const removeKey = async ({
   object,
   key,
   nested,
   security = "encrypt",
-}: RemoveKeyParameters): Object | undefined => {
+}: RemoveKeyParameters): Promise<Object | undefined> => {
   const PKBasic = getPKBasic();
   try {
     if (object === undefined || key === undefined) {
@@ -133,19 +133,25 @@ export const removeKey = ({
     if (!nested) {
       if (security === "strip") {
         PKBasic.forEach((pkKey) => {
-          Object.keys(object).forEach((key) => {
-            if (pkKey === key) object[key] = "";
-          });
+          if (pkKey in object) object[pkKey] = "";
         });
+      } else if (security === "encrypt") {
+        for (const pkKey of PKBasic) {
+          if (pkKey in object && typeof object[pkKey] === "string") {
+            const encrypted = await encrypt(object[pkKey]);
+            if (encrypted) object[pkKey] = encrypted;
+          }
+        }
       }
+
       delete object[key];
       return object;
     }
+
     const path: string[] = nested?.split(".");
     let current: any = object;
     for (let i = 0; i < path.length; i++) {
       const segment = path[i];
-
       const index = Number(segment);
       const isArrayIndex = !isNaN(index);
 
@@ -165,15 +171,23 @@ export const removeKey = ({
         ) {
           current[segment] = {};
         }
-
         current = current[segment];
       }
     }
+
     if (security === "strip") {
       PKBasic.forEach((pkKey) => {
         if (pkKey in current) current[pkKey] = "";
       });
+    } else if (security === "encrypt") {
+      for (const pkKey of PKBasic) {
+        if (pkKey in current && typeof current[pkKey] === "string") {
+          const encrypted = await encrypt(current[pkKey]);
+          if (encrypted) current[pkKey] = encrypted.encryptedData;
+        }
+      }
     }
+
     delete current[key];
     return object;
   } catch (error) {
