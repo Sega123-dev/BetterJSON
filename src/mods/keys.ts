@@ -1,4 +1,6 @@
-import { getPKBasic } from "../secure/security";
+import { encryptText } from "../@helpers/cryptoutils";
+import { encrypt, getPKBasic } from "../secure/security";
+import { stringifyJSON } from "../utils/stringify";
 
 type Security = "strip" | "encrypt" | "none";
 
@@ -61,14 +63,14 @@ export const addKey = ({
 
     if (!nested) {
       if (security === "strip") {
-        PKBasic.forEach((pkKey) => {
+        PKBasic.forEach((pkKey): void => {
           Object.keys(object).forEach((key) => {
             if (pkKey === key) object[key] = "";
           });
         });
-        object[newKey] = keyValue;
-        return object;
       }
+      object[newKey] = keyValue;
+      return object;
     }
     const path: string[] | undefined = nested?.split(".");
     let current: any = object;
@@ -98,7 +100,11 @@ export const addKey = ({
         current = current[segment];
       }
     }
-
+    if (security === "strip") {
+      PKBasic.forEach((pkKey) => {
+        if (pkKey in current) current[pkKey] = "";
+      });
+    }
     current[newKey] = keyValue;
     return object;
   } catch (error) {
@@ -163,7 +169,11 @@ export const removeKey = ({
         current = current[segment];
       }
     }
-
+    if (security === "strip") {
+      PKBasic.forEach((pkKey) => {
+        if (pkKey in current) current[pkKey] = "";
+      });
+    }
     delete current[key];
     return object;
   } catch (error) {
@@ -226,7 +236,11 @@ export const modifyKeyValue = ({
         target = target[segment];
       }
     }
-
+    if (security === "strip") {
+      PKBasic.forEach((pkKey) => {
+        if (pkKey in target) target[pkKey] = "";
+      });
+    }
     target[key] = newValue;
     return object;
   } catch (error) {
@@ -289,6 +303,11 @@ export const renameKey = ({
         }
         target = target[segment];
       }
+    }
+    if (security === "strip") {
+      PKBasic.forEach((pkKey) => {
+        if (pkKey in target) target[pkKey] = "";
+      });
     }
     target[newKey] = target[oldKey];
     delete target[oldKey];

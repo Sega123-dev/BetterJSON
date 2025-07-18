@@ -91,11 +91,12 @@ const object = {
   password: "password123",
   theme: "dark",
 };
-console.log(
-  modifyKeyValue({
-    object: object,
-    key: "theme",
-    newValue: "light",
-    security: "strip",
-  })
-);
+const a = modifyKeyValue({
+  object: example,
+  key: "score",
+  newValue: 2222,
+  nested: "meta",
+  security: "strip",
+});
+const b: any = a;
+console.log(a);
