@@ -15,8 +15,6 @@ export const encrypt = async (
   return await encryptText(plain);
 };
 
-export const encryptAll = () => {};
-
 export const decrypt = async ({
   encryptedData,
   iv,
